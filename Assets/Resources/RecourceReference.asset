@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: RecourceReference
   m_EditorClassIdentifier: 
   MATERIALS_SECTOR_IDLE: {fileID: 2100000, guid: 61d7a53961b8ad647b199fad9f4a16b5, type: 2}
-  MATERIALS_SECTOR_BAD: {fileID: 2100000, guid: d856b34f3c2693e469de0699fcfc1e28, type: 2}
+  MATERIALS_SECTOR_BAD: {fileID: 2100000, guid: 80be9e4e0b2ae1548bc5525791fd4c6d, type: 2}
   MATERIALS_SECTOR_FINISH: {fileID: 2100000, guid: 52c6dba59450f15488bcb6b3052cbf92, type: 2}
