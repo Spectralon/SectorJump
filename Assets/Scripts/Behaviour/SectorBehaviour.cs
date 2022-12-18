@@ -72,6 +72,12 @@ public class SectorBehaviour : MonoBehaviour
         }
     }
 
+    public void Crack(float percentage)
+    {
+        if (State == SectorState.Idle)
+            Renderer.material.SetFloat("_Cracked", Mathf.Clamp01(percentage));
+    }
+
     public enum SectorState
     {
         Idle = 0,

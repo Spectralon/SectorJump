@@ -46,9 +46,14 @@ public class PlatformBehaviour : MonoBehaviour
         player.CurrentPlatform = this;
     }
 
-    public void Damage(float damage)
+    public void Damage(float damage, SectorBehaviour touchedSector)
     {
         BreakStrength -= damage;
+
+        if(BreakStrength < 5)
+        {
+            touchedSector.Crack(BreakStrength / 5f);
+        }
 
         if (BreakStrength <= 0) Break();
     }
