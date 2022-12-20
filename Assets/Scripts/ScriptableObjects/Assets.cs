@@ -13,6 +13,10 @@ public class Assets : ScriptableObject
 
     public Material MATERIALS_SECTOR_FINISH;
 
+    public Material MATERIALS_SECTOR_IDLE_BLUR;
+
+    public Material MATERIALS_SECTOR_BAD_BLUR;
+
     private static Assets _reference;
 
     public static Assets Resources {

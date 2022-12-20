@@ -46,9 +46,14 @@ public class PlatformBehaviour : MonoBehaviour
         player.CurrentPlatform = this;
     }
 
-    public void Damage(float damage)
+    public void Damage(float damage, SectorBehaviour touchedSector)
     {
         BreakStrength -= damage;
+
+        if(BreakStrength < 5)
+        {
+            touchedSector.Crack(BreakStrength / 5f);
+        }
 
         if (BreakStrength <= 0) Break();
     }
@@ -60,8 +65,8 @@ public class PlatformBehaviour : MonoBehaviour
         {
             GameObject child = sector.gameObject;
 
-            // Периодически такой баг происходит. Скорее всего - из-за частичного проникновения игрока в сектор финиша при падении с большой высоты
-            // (платформа считается пройденной и ломается). Но я это не проверял т.к. его очень сложно поймать. В рамках ДЗ приемлем и такой фикс.
+            // TODO: Периодически такой баг происходит. Скорее всего - из-за частичного проникновения игрока в сектор финиша при падении с большой высоты
+            // (платформа считается пройденной и ломается). Надо проверить.
             if (sector.State == SectorBehaviour.SectorState.Finish) return;
 
             if (!child.TryGetComponent(out Rigidbody rigidbody)) 

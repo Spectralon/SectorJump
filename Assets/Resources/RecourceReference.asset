@@ -12,6 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9aa12597735dcfb4baf2e58178577562, type: 3}
   m_Name: RecourceReference
   m_EditorClassIdentifier: 
-  MATERIALS_SECTOR_IDLE: {fileID: 2100000, guid: 61d7a53961b8ad647b199fad9f4a16b5, type: 2}
-  MATERIALS_SECTOR_BAD: {fileID: 2100000, guid: d856b34f3c2693e469de0699fcfc1e28, type: 2}
+  MATERIALS_SECTOR_IDLE: {fileID: 2100000, guid: 72295eb208a457e4483ac69c4f297def, type: 2}
+  MATERIALS_SECTOR_BAD: {fileID: 2100000, guid: 80be9e4e0b2ae1548bc5525791fd4c6d, type: 2}
   MATERIALS_SECTOR_FINISH: {fileID: 2100000, guid: 52c6dba59450f15488bcb6b3052cbf92, type: 2}
+  MATERIALS_SECTOR_IDLE_BLUR: {fileID: 2100000, guid: 61d7a53961b8ad647b199fad9f4a16b5, type: 2}
+  MATERIALS_SECTOR_BAD_BLUR: {fileID: 2100000, guid: d856b34f3c2693e469de0699fcfc1e28, type: 2}

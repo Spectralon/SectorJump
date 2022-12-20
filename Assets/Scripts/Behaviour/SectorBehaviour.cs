@@ -29,7 +29,14 @@ public class SectorBehaviour : MonoBehaviour
         }
     }
 
-    private void Awake() => UpdateMaterial();
+    private void Start()
+    {
+        UpdateMaterial();
+        GameController.OnPlayerDie.AddListener(e => UpdateMaterial());
+
+        // Необходимо использовать в случае, если материал финиша изменится на Transparent
+        //GameController.OnReachFinish.AddListener(e => UpdateMaterial());
+    }
 
     private void OnValidate() => UpdateMaterial();
 
@@ -38,10 +45,16 @@ public class SectorBehaviour : MonoBehaviour
         switch (State)
         {
             case SectorState.Idle:
-                Renderer.sharedMaterial = Assets.Resources.MATERIALS_SECTOR_IDLE;
+                Renderer.sharedMaterial =
+                    GameController.GameState == GameController.State.Playing ?
+                    Assets.Resources.MATERIALS_SECTOR_IDLE :
+                    Assets.Resources.MATERIALS_SECTOR_IDLE_BLUR;
                 break;
             case SectorState.Bad:
-                Renderer.sharedMaterial = Assets.Resources.MATERIALS_SECTOR_BAD;
+                Renderer.sharedMaterial =
+                    GameController.GameState == GameController.State.Playing ?
+                    Assets.Resources.MATERIALS_SECTOR_BAD :
+                    Assets.Resources.MATERIALS_SECTOR_BAD_BLUR;
                 break;
             case SectorState.Finish:
                 Renderer.sharedMaterial = Assets.Resources.MATERIALS_SECTOR_FINISH;
@@ -70,6 +83,12 @@ public class SectorBehaviour : MonoBehaviour
             default:
                 break;
         }
+    }
+
+    public void Crack(float percentage)
+    {
+        if (State == SectorState.Idle)
+            Renderer.material.SetFloat("_Cracked", Mathf.Clamp01(percentage));
     }
 
     public enum SectorState

@@ -146,8 +146,8 @@ public class GameController : MonoBehaviour
             PlatformBehaviour platform = e.Player.CurrentPlatform;
             if (LastTouchedPlatform == null) LastTouchedPlatform = platform;
 
-            if (e.Sector.State is not SectorBehaviour.SectorState.Finish and not SectorBehaviour.SectorState.Bad)   // Я человек простой: ВС предложила, я сделал :D
-                platform.Damage(LastTouchedPlatform.transform.position.y - platform.transform.position.y);
+            if (e.Sector.State is not SectorBehaviour.SectorState.Finish and not SectorBehaviour.SectorState.Bad)
+                platform.Damage(LastTouchedPlatform.transform.position.y - platform.transform.position.y, e.Sector);
 
             LastTouchedPlatform = platform;
         });
@@ -162,7 +162,6 @@ public class GameController : MonoBehaviour
         Score = CachedScore;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         GameState = State.Playing;
-        UI.UISetScreen(UI.Screen.Ingame);
     }
 
     public static void NextLevel()
