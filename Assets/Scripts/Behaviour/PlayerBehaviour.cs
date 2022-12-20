@@ -15,10 +15,10 @@ public class PlayerBehaviour : MonoBehaviour
 
     private float _minReachedY;
 
-    public float MinReachedY 
-    { 
+    public float MinReachedY
+    {
         get => _minReachedY;
-        set 
+        set
         {
             if (value < _minReachedY && TargetY != 0)
             {
@@ -53,9 +53,31 @@ public class PlayerBehaviour : MonoBehaviour
         private set => _bounceAudio = value;
     }
 
-    private void Awake() => Unfreeze();
+    private ParticleSystem ParticleSystem;
 
-    private void Start() => GameController.OnContactSector.AddListener(e => e.Player.BounceAudio.Play());
+    private bool Boosted = false;
+
+    private int PlatformsPassed = 0;
+
+    private void Awake()
+    {
+        Unfreeze();
+        TryGetComponent(out ParticleSystem);
+    }
+
+    private void Start()
+    {
+        GameController.OnContactSector.AddListener(e =>
+        {
+            PlatformsPassed = 0;
+            e.Player.BounceAudio.Play();
+            e.Player.Unboost();
+        });
+        GameController.OnEnterPlatform.AddListener(e =>
+        {
+            if (++e.Player.PlatformsPassed > 1) e.Player.Boost();
+        });
+    }
 
     private void Update() => MinReachedY = transform.position.y;
 
@@ -71,6 +93,32 @@ public class PlayerBehaviour : MonoBehaviour
     {
         Freeze();
         GameController.OnFinishReached(this);
+    }
+
+    public void Boost()
+    {
+        if (Boosted) return;
+        Boosted = true;
+        if (ParticleSystem != null) ParticleSystem.Play();
+    }
+
+    public void Unboost()
+    {
+        if (!Boosted) return;
+        Boosted = false;
+        if (ParticleSystem != null)
+        {
+            ParticleSystem.Stop();
+            ParticleSystem.Particle[] particles = new ParticleSystem.Particle[ParticleSystem.particleCount];
+            if (ParticleSystem.GetParticles(particles) > 0)
+            {
+                for (int i = 0; i < particles.Length; i++)
+                {
+                    particles[i].remainingLifetime = 0f;
+                }
+                ParticleSystem.SetParticles(particles);
+            }
+        }
     }
 
     public void Freeze() => Rigidbody.constraints = RigidbodyConstraints.FreezeAll;
