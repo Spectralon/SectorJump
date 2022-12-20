@@ -53,7 +53,11 @@ public class PlayerBehaviour : MonoBehaviour
         private set => _bounceAudio = value;
     }
 
-    private ParticleSystem ParticleSystem;
+    [SerializeField] private ParticleSystem TrailParticles;
+
+    [SerializeField] private ParticleSystem WinParticles;
+
+    [SerializeField] private ParticleSystem LoseParticles;
 
     private bool Boosted = false;
 
@@ -62,7 +66,7 @@ public class PlayerBehaviour : MonoBehaviour
     private void Awake()
     {
         Unfreeze();
-        TryGetComponent(out ParticleSystem);
+        if(TrailParticles == null) TryGetComponent(out TrailParticles);
     }
 
     private void Start()
@@ -86,12 +90,14 @@ public class PlayerBehaviour : MonoBehaviour
     public void Die()
     {
         Freeze();
+        if (LoseParticles != null) LoseParticles.Play(false);
         GameController.OnPlayerDied(this);
     }
 
     public void Finish()
     {
         Freeze();
+        if (WinParticles != null) WinParticles.Play(false);
         GameController.OnFinishReached(this);
     }
 
@@ -99,24 +105,24 @@ public class PlayerBehaviour : MonoBehaviour
     {
         if (Boosted) return;
         Boosted = true;
-        if (ParticleSystem != null) ParticleSystem.Play();
+        if (TrailParticles != null) TrailParticles.Play(false);
     }
 
     public void Unboost()
     {
         if (!Boosted) return;
         Boosted = false;
-        if (ParticleSystem != null)
+        if (TrailParticles != null)
         {
-            ParticleSystem.Stop();
-            ParticleSystem.Particle[] particles = new ParticleSystem.Particle[ParticleSystem.particleCount];
-            if (ParticleSystem.GetParticles(particles) > 0)
+            TrailParticles.Stop();
+            ParticleSystem.Particle[] particles = new ParticleSystem.Particle[TrailParticles.particleCount];
+            if (TrailParticles.GetParticles(particles) > 0)
             {
                 for (int i = 0; i < particles.Length; i++)
                 {
                     particles[i].remainingLifetime = 0f;
                 }
-                ParticleSystem.SetParticles(particles);
+                TrailParticles.SetParticles(particles);
             }
         }
     }

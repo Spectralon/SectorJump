@@ -29,6 +29,13 @@ public class SectorBehaviour : MonoBehaviour
         }
     }
 
+    private ParticleSystem ParticleSystem;
+
+    private void Awake()
+    {
+        TryGetComponent(out ParticleSystem);
+    }
+
     private void Start()
     {
         UpdateMaterial();
@@ -87,8 +94,12 @@ public class SectorBehaviour : MonoBehaviour
 
     public void Crack(float percentage)
     {
-        if (State == SectorState.Idle)
-            Renderer.material.SetFloat("_Cracked", Mathf.Clamp01(percentage));
+        if (State != SectorState.Idle) return;
+        Renderer.material.SetFloat("_Cracked", Mathf.Clamp01(percentage));
+        if(ParticleSystem != null)
+        {
+            ParticleSystem.Play();
+        }
     }
 
     public enum SectorState
