@@ -145,6 +145,7 @@ public class GameController : MonoBehaviour
         {
             PlatformBehaviour platform = e.Player.CurrentPlatform;
             if (LastTouchedPlatform == null) LastTouchedPlatform = platform;
+            if (LastTouchedPlatform.GetInstanceID() == platform.GetInstanceID()) return;
 
             if (e.Sector.State is not SectorBehaviour.SectorState.Finish and not SectorBehaviour.SectorState.Bad)
                 platform.Damage(LastTouchedPlatform.transform.position.y - platform.transform.position.y, e.Sector);
